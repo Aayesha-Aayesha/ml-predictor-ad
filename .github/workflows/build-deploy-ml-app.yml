@@ -25,3 +25,9 @@ jobs:
       - run: |
           docker buildx build . -t containerregistory2.azurecr.io/myapp3:${{ github.sha }}
           docker push containerregistory2.azurecr.io/myapp3:${{ github.sha }}
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          slot-name: production
+          images: containerregistory2.azurecr.io/myapp3:${{ github.sha }}
