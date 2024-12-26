@@ -1,0 +1,27 @@
+name: build-and-deploy-file
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDS }}
+      
+      - uses: azure/docker-login@v1
+        with:
+          login-server: containerregistory2.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker buildx build . -t containerregistory2.azurecr.io/myapp3:${{ github.sha }}
+          docker push containerregistory2.azurecr.io/myapp3:${{ github.sha }}
