@@ -1,1 +1,1 @@
-# ML Predictor Application run by MS Azure
+# ML Predictor Application run using Microsoft Azure Web-app Service
